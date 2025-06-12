@@ -120,3 +120,10 @@ def update_reminder(tablename, user_id, count):
         conn.commit()
     conn.close()
 
+def delete_user(tablename, user_id):
+    conn = get_db_connection()
+    with conn.cursor() as cur:
+        cur.execute(f"DELETE FROM {tablename} WHERE user_id = {user_id}")
+        conn.commit()
+    conn.close()
+

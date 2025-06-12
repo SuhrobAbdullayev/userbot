@@ -1,18 +1,13 @@
 import time
 from datetime import datetime
 
-from config import ADMIN_USER_ID, TABLE_NAME
+from config import ADMIN_USER_ID, TABLE_NAME, REMINDER30, REMINDER50, REMINDER70, REMINDER90, REMINDER180, REMINDER365
 from db import (
     get_active_admin_task, get_users_to_send, deactivate_admin_task,
-    update_sent, get_inactive_users, update_reminder, get_layal_users
+    update_sent, get_inactive_users, update_reminder, get_layal_users, delete_user
 )
 
 def send_admin_task(app):
-    print("test task")
-    now = datetime.now()
-    if not (9 <= now.hour < 24):
-        return
-
     task = get_active_admin_task()
     if not task:
         return
@@ -31,8 +26,8 @@ def send_admin_task(app):
             update_sent(tablename, user_id)
             sent += 1
             time.sleep(5)
-        except Exception as e:
-            print(f"❌ Failed to send to {user_id}: {e}")
+        except:
+            delete_user(TABLE_NAME, user_id)
 
     app.send_message(ADMIN_USER_ID, f"✅ Finished sending to {sent} users from {tablename}.")
     deactivate_admin_task(tablename)
@@ -40,13 +35,13 @@ def send_admin_task(app):
 
 def send_reminders(app):
     now = datetime.now()
-    if not (1 <= now.hour < 24):
+    if not (9 <= now.hour < 16):
         return
 
     levels = [
-        (20, 0, "❗20 kun davomida siz bilan aloqa bo‘lmadi."),
-        (40, 1, "❗️40 kun davomida siz bilan aloqa bo‘lmadi."),
-        (60, 2, "❗️60 kun davomida siz bilan aloqa bo‘lmadi.")
+        (30, 0, f"{REMINDER30}"),
+        (50, 1, f"{REMINDER50}"),
+        (70, 2, f"{REMINDER70}")
     ]
 
     for days, reminder_level, message_text in levels:
@@ -56,23 +51,22 @@ def send_reminders(app):
 
         for user_id in inactive_users:
             try:
-                update_reminder(TABLE_NAME, user_id, reminder_level + 1)
                 app.send_message(chat_id=user_id, text=message_text)
-                print(f"✅ Reminder level {reminder_level + 1} sent to {user_id}")
+                update_reminder(TABLE_NAME, user_id, reminder_level + 1)
                 time.sleep(5)
-            except Exception as e:
-                print(f"❌ Failed to send to {user_id}: {e}")
+            except:
+                delete_user(TABLE_NAME, user_id)
 
 
 def send_prize(app):
     now = datetime.now()
-    if not (1 <= now.hour < 24):
+    if not (9 <= now.hour < 16):
         return
 
     levels = [
-        (90, 3, "siz 90 kun davomida faol bo‘lmadingiz. Sizga sovg‘a taqdim etamiz."),
-        (180, 4, "siz 180 kun davomida faol bo‘lmadingiz. Sizga sovg‘a taqdim etamiz."),
-        (365, 5, "siz 365 kun davomida faol bo‘lmadingiz. Sizga sovg‘a taqdim etamiz.")
+        (90, 3, f"{REMINDER90}"),
+        (180, 4, f"{REMINDER180}"),
+        (365, 5, f"{REMINDER365}")
     ]
 
     for days, reminder_level, message_text in levels:
@@ -82,9 +76,8 @@ def send_prize(app):
 
         for user_id in loyal_users:
             try:
-                update_reminder(TABLE_NAME, user_id, reminder_level + 1)
                 app.send_message(chat_id=user_id, text=message_text)
-                print(f"✅ Reminder level {reminder_level + 1} sent to {user_id}")
+                update_reminder(TABLE_NAME, user_id, reminder_level + 1)
                 time.sleep(5)
-            except Exception as e:
-                print(f"❌ Failed to send to {user_id}: {e}")
+            except:
+                delete_user(TABLE_NAME, user_id)

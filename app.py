@@ -14,7 +14,7 @@ from config import (
 )
 from db import get_user, update_last_sent, insert_user
 
-app = Client("Fargona", 24525403, "e167232c3590965d58b8efb5ba140519")
+app = Client("User", 24525403, "e167232c3590965d58b8efb5ba140519")
 
 
 @app.on_message(filters.private)
@@ -76,8 +76,8 @@ def handle_message(client: Client, message: Message):
 
 def setup_schedules():
     schedule.every(5).minutes.do(lambda: send_admin_task(app))
-    schedule.every().day.at("10:00").do(lambda: send_reminders(app))
-    schedule.every().day.at("11:00").do(lambda: send_prize(app))
+    schedule.every(60).minutes.do(lambda: send_reminders(app))
+    schedule.every(60).minutes.do(lambda: send_prize(app))
 
 
 def run_scheduler():

@@ -1,9 +1,9 @@
 ADMIN_USER_ID = 5473283443
 TABLE_NAME = "fargona"
-CHANNEL_ID = -1001764505427
-
 NARX_ID = 35
 
+# Do not change the following values
+CHANNEL_ID = -1001764505427
 ANKETA = """Menga e'loningizni tayyorlashim uchun ishga qabul qilish bo'yicha quyidagi ma'lumotlarni yuboring:
 
 1. Ish lavozimi
@@ -46,3 +46,27 @@ AFTER_NARX = """🎯 Mijozlar bazamizga qo‘shiling – e’lonlar uchun maxsus
 
 Ko‘proq ma’lumot olish uchun:
 🔢 333 – ni yozing"""
+
+REMINDER30 = """🤗 Assalomu alaykum!
+- Sizning oxirgi reklamangizga 1 oy bo‘ldi. Ishchilar yetarlimi? Agar hali xodim kerak bo‘lsa, bemalol yangi e'lon berishingiz mumkin."""
+
+REMINDER50 = """🤗 Assalomu alaykum!
+Hozirgi vaqtda yangi ishchi kerak emasmi? Agar bo‘lsa, e'lon joylashishda yordam bera olamiz."""
+
+REMINDER70 = """🤗 Assalomu alaykum!
+Hurmatli mijoz, siz oxirgi marta reklama berganingizga 3 oyga yaqinlashib qoldi. Agar jamoangizga yangi xodim kerak bo‘lsa, biz har doimgidek yordam berishga tayyormiz."""
+
+REMINDER90 = """🤗 Assalomu alaykum!
+- Siz bizning mijozlar bazamizga qo‘shilganingizga 3 oy bo‘ldi 🎉
+- Sizga minnatdorchilik sifatida 3 martalik reklama bonus taqdim etamiz.
+Siz bilan hamkorlik qilayotganimizdan xursandman."""
+
+REMINDER180 = """🤗 Assalomu alaykum!
+- Siz bizning mijozlar bazamizga qo‘shilganingizga 6 oy bo‘ldi 🎉
+- Sizga minnatdorchilik sifatida 3 martalik reklama bonus taqdim etamiz.
+Siz bilan hamkorlik qilayotganimizdan xursandman."""
+
+REMINDER365 = """🎉 1 yillik hamkorligimiz muborak!
+Sizning mijozlar ro‘yxatimizga qo‘shilganingizga 1 yil to‘ldi.
+Bu munosabat bilan siz uchun 3 martalik reklama bonusi tayyorladik.
+Marhamat, e’lonlaringizni yuboring — hamkorlikni davom ettiramiz."""
