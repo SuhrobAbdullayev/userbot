@@ -10,18 +10,55 @@ from pyrogram.types import Message
 from autosend import send_admin_task, send_reminders, send_prize
 from config import (
     TABLE_NAME, CHANNEL_ID, NARX_ID,
-    ADMIN_USER_ID, ANKETA, GREETING_MESSAGE, CLIENT_BASE, AFTER_NARX
+    ADMIN_USER_ID, ANKETA, ADMINS, GREETING_MESSAGE, CLIENT_BASE, AFTER_NARX
 )
 from db import get_user, update_last_sent, insert_user
 
-app = Client("User", 24525403, "e167232c3590965d58b8efb5ba140519")
+app = Client("User", 20690773, "fdbb355357cb0d625ba1c8790e05ffad")
 
+@app.on_message(filters.private & filters.outgoing)
+def sent_message_handler(client, message):
+    recipient_id = message.chat.id
+    if recipient_id in ADMINS or message.chat.type == "bot":
+        return
+    user = get_user(TABLE_NAME, recipient_id)
+    if user:
+        update_last_sent(TABLE_NAME, recipient_id)
+    else:
+        other = get_user(f"{TABLE_NAME}_users", recipient_id)
+        if other:
+            update_last_sent(f"{TABLE_NAME}_users", recipient_id)
+        else:
+            insert_user(f"{TABLE_NAME}_users", recipient_id)
+
+    if message.text:
+        text = message.text.strip().lower()
+        if text == "222":
+            try:
+                client.copy_message(
+                    chat_id=recipient_id,
+                    from_chat_id=CHANNEL_ID,
+                    message_id=NARX_ID
+                )
+                if not user:
+                    message.reply_text(AFTER_NARX)
+            except Exception as e:
+                client.send_message(ADMIN_USER_ID, "❌ Xato yuz berdi: " + str(e))
+                print(e)
+            if recipient_id == ADMIN_USER_ID:
+                message.delete()
+        elif text == "111":
+            message.reply_text(ANKETA)
+            message.delete()
+        elif text == "333":
+            message.reply_text(CLIENT_BASE)
+            message.delete()
 
 @app.on_message(filters.private)
 def handle_message(client: Client, message: Message):
-
     user_id = message.from_user.id
-
+    if user_id in ADMINS or message.chat.type == "bot":
+        return
     if user_id == ADMIN_USER_ID:
         pass
     else:
@@ -49,6 +86,7 @@ def handle_message(client: Client, message: Message):
                 insert_user(f"{TABLE_NAME}_users", user_id)
 
     if message.text:
+        user = get_user(TABLE_NAME, user_id)
         text = message.text.strip().lower()
         if "narx" in text or "нарх" in text or text == "222":
             try:

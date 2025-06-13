@@ -3,6 +3,7 @@ TABLE_NAME = "fargona"
 NARX_ID = 35
 
 # Do not change the following values
+ADMINS = [5606952183, 5701331537, 2019652767, 130570441, 1061235879, 1029949773, 7236844751, 5638646090, 5486450078]
 CHANNEL_ID = -1001764505427
 ANKETA = """Menga e'loningizni tayyorlashim uchun ishga qabul qilish bo'yicha quyidagi ma'lumotlarni yuboring:
 
