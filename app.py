@@ -14,7 +14,7 @@ from config import (
 )
 from db import get_user, update_last_sent, insert_user
 
-app = Client("User", 20690773, "fdbb355357cb0d625ba1c8790e05ffad")
+app = Client("User", 0000000, "fdbb35530000000000000ba1c8790e05ffad")
 
 @app.on_message(filters.private & filters.outgoing)
 def sent_message_handler(client, message):
